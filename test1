@@ -18,7 +18,7 @@ paused = False
 def on_key(event):
     global paused
     if event.key == ' ':
-        paused = not paused
+        paused = True
 
 # 이벤트 핸들러 연결
 fig.canvas.mpl_connect('key_press_event', on_key)
