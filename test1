@@ -1,7 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
-import time
 
 fig, ax = plt.subplots()
 ax.set_xlim(0, 100)
@@ -16,14 +15,13 @@ text = ax.text(70, 9000, '', fontsize=12)  # 숫자를 표시할 텍스트 객�
 # 변수 추가
 paused = False
 
-def pause_animation(seconds):
+def on_key(event):
     global paused
-    paused = True
-    time.sleep(seconds)
-    paused = False
+    if event.key == ' ':
+        paused = True
 
-# 초 후에 애니메이션을 일시 정지하려면 아래와 같이 호출합니다.
-pause_animation(5)  # 5초 후에 정지하도록 설정 (원하는 초를 지정)
+# 이벤트 핸들러 연결
+fig.canvas.mpl_connect('key_press_event', on_key)
 
 def update(num, x, y, line, text):
     if not paused:
@@ -34,6 +32,4 @@ def update(num, x, y, line, text):
 
 anim = FuncAnimation(fig, update, frames=len(x) + 1, fargs=(x, y ** 2, line, text), interval=100, repeat=False)
 
-# 애니메이션이 끝난 후 창을 자동으로 닫습니다.
 plt.show()
-plt.close()
