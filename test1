@@ -1,0 +1,23 @@
+import numpy as np
+import matplotlib.pyplot as plt
+from matplotlib.animation import FuncAnimation
+
+fig, ax = plt.subplots()
+ax.set_xlim(0, 100)
+ax.set_ylim(0, 10000)
+
+x = np.arange(101)
+y = np.arange(101)
+line, = ax.plot(x, y)
+
+text = ax.text(70, 9000, '', fontsize=12)  # 숫자를 표시할 텍스트 객체
+
+def update(num, x, y, line, text):
+    line.set_data(x[:num], y[:num])
+    text.set_text(f'{1.00 + num * 0.01:.2f}x')  # 숫자 업데이트
+    text.set_position((45, 5000))
+    return line, text
+
+anim = FuncAnimation(fig, update, frames=len(x) + 1, fargs=(x, y ** 2, line, text), interval=100, repeat=False)
+
+plt.show()
