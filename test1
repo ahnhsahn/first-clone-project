@@ -12,10 +12,22 @@ line, = ax.plot(x, y)
 
 text = ax.text(70, 9000, '', fontsize=12)  # 숫자를 표시할 텍스트 객체
 
+# 변수 추가
+paused = False
+
+def on_key(event):
+    global paused
+    if event.key == ' ':
+        paused = not paused
+
+# 이벤트 핸들러 연결
+fig.canvas.mpl_connect('key_press_event', on_key)
+
 def update(num, x, y, line, text):
-    line.set_data(x[:num], y[:num])
-    text.set_text(f'{1.00 + num * 0.02:.2f}x')  # 숫자 업데이트
-    text.set_position((45, 5000))
+    if not paused:
+        line.set_data(x[:num], y[:num])
+        text.set_text(f'{1.00 + num * 0.02:.2f}x')  # 숫자 업데이트
+        text.set_position((45, 5000))
     return line, text
 
 anim = FuncAnimation(fig, update, frames=len(x) + 1, fargs=(x, y ** 2, line, text), interval=100, repeat=False)
